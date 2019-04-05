@@ -17,14 +17,14 @@ function computerPlay() {
 
 function playRound(playerSelection, computerSelection) {
 	let loser = 'Lose ! ' + computerSelection + ' beats ' + playerSelection + '!';
-	let winner =  'Win ! ' + playerSelection + ' beats ' + computerSelection + '!';
-	let tie =  'Tie ! ' + playerSelection + ' ties with ' + computerSelection;
+	let winner = 'Win ! ' + playerSelection + ' beats ' + computerSelection + '!';
+	let tie = 'Tie ! ' + playerSelection + ' ties with ' + computerSelection;
 
 	let round =
 		playerSelection == 'rock' && computerSelection == 'rock'
 			? tie
 			: playerSelection == 'paper' && computerSelection == 'paper'
-				?  tie
+				? tie
 				: playerSelection == 'scissor' && computerSelection == 'scissor'
 					? tie
 					: playerSelection == 'scissor' && computerSelection == 'rock'
@@ -37,19 +37,26 @@ function playRound(playerSelection, computerSelection) {
 									? loser
 									: playerSelection == 'rock' && computerSelection == 'scissor'
 										? winner
-										: playerSelection == 'rock' && computerSelection == 'paper' ? 'loser' + loser : '';
+										: playerSelection == 'rock' && computerSelection == 'paper' ? loser : '';
 	return round;
 }
 
 function game() {
-
 	const computerSelection = computerPlay();
 	let scores = [ 0, 0 ];
 
 	for (i = 0; i < 5; i++) {
-        let playerSelection = prompt('Rock , Paper, Scissor');
-        playerSelection = playerSelection.toLowerCase();
-		let beginGame = playRound(playerSelection, computerSelection);
+		// let playerSelection = prompt('Please enter Rock , Paper, Scissor');
+		// playerSelection = playerSelection.toLowerCase();
+
+        do {
+            playerSelection = prompt('Please enter Rock , Paper, Scissor').toLowerCase();
+            if (playerSelection == 'rock' || playerSelection == 'scissor' || playerSelection == 'paper') {
+                break;
+            }
+        } while (playerSelection !== 'rock' || playerSelection !== 'scissor' || playerSelection !== 'paper')
+        
+        let beginGame = playRound(playerSelection, computerSelection);
 		console.log(beginGame);
 
 		if (beginGame.slice(0, 4) == 'Lose') {
@@ -59,12 +66,27 @@ function game() {
 		}
 	}
 
-    if (scores[0] > scores[1]) {
-        console.log("You are a winner! Score: " + scores[0] + " to " + scores[1] );
-    } else if (scores[0] < scores[1]) {
-        console.log("You are a loser! Score: " + scores[0] + " to " + scores[1] );
-    } else {
-        console.log("TIE Game!! Score: " + scores[0] + " to " + scores[1] );
-    }
+	if (scores[0] > scores[1]) {
+		console.log('You are a winner! Score: ' + scores[0] + ' to ' + scores[1]);
+	} else if (scores[0] < scores[1]) {
+		console.log('You are a loser! Score: ' + scores[0] + ' to ' + scores[1]);
+	} else {
+		console.log('TIE Game!! Score: ' + scores[0] + ' to ' + scores[1]);
+	}
 }
 
+//game()
+
+
+function test() {
+    let playerSelection;
+    for (i = 0; i < 5; i++) {
+        do {
+            playerSelection = prompt('Please enter Rock , Paper, Scissor').toLowerCase();
+            if (playerSelection == 'rock' || playerSelection == 'scissor' || playerSelection == 'paper') {
+                console.log(playerSelection);
+                break;
+            }
+        } while (playerSelection !== 'rock' || playerSelection !== 'scissor' || playerSelection !== 'paper')
+    }
+}
