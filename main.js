@@ -15,78 +15,107 @@ function computerPlay() {
 	return choice;
 }
 
+function capitalize(str){
+	arr = str.split("");
+	 arr[0] = arr[0].toUpperCase();  
+ return arr.join("");
+ }
+
 function playRound(playerSelection, computerSelection) {
-	let loser = 'Lose ! ' + computerSelection + ' beats ' + playerSelection + '!';
-	let winner = 'Win ! ' + playerSelection + ' beats ' + computerSelection + '!';
-	let tie = 'Tie ! ' + playerSelection + ' ties with ' + computerSelection;
+	loser = 'Lose ! ' + capitalize(computerSelection) + ' beats ' + capitalize(playerSelection) + '!';
+	winner = 'Win ! ' + capitalize(playerSelection) + ' beats ' + capitalize(computerSelection) + '!';
+	tie = 'Tie ! ' + capitalize(playerSelection) + ' ties with ' + capitalize(computerSelection) + '!';
 
 	let round =
-		playerSelection == 'rock' && computerSelection == 'rock'
-			? tie
-			: playerSelection == 'paper' && computerSelection == 'paper'
-				? tie
-				: playerSelection == 'scissor' && computerSelection == 'scissor'
-					? tie
-					: playerSelection == 'scissor' && computerSelection == 'rock'
-						? loser
-						: playerSelection == 'scissor' && computerSelection == 'paper'
-							? winner
-							: playerSelection == 'paper' && computerSelection == 'rock'
-								? winner
-								: playerSelection == 'paper' && computerSelection == 'scissor'
-									? loser
-									: playerSelection == 'rock' && computerSelection == 'scissor'
-										? winner
-										: playerSelection == 'rock' && computerSelection == 'paper' ? loser : '';
+		playerSelection == 'rock' && computerSelection == 'rock' ?
+		tie :
+		playerSelection == 'paper' && computerSelection == 'paper' ?
+		tie :
+		playerSelection == 'scissor' && computerSelection == 'scissor' ?
+		tie :
+		playerSelection == 'scissor' && computerSelection == 'rock' ?
+		loser :
+		playerSelection == 'scissor' && computerSelection == 'paper' ?
+		winner :
+		playerSelection == 'paper' && computerSelection == 'rock' ?
+		winner :
+		playerSelection == 'paper' && computerSelection == 'scissor' ?
+		loser :
+		playerSelection == 'rock' && computerSelection == 'scissor' ?
+		winner :
+		playerSelection == 'rock' && computerSelection == 'paper' ? loser : '';
 	return round;
 }
 
-function game() {
+function game(play) {
 	const computerSelection = computerPlay();
-	let scores = [ 0, 0 ];
+	return playRound(play, computerSelection);
+}
 
-	for (i = 0; i < 5; i++) {
-		// let playerSelection = prompt('Please enter Rock , Paper, Scissor');
-		// playerSelection = playerSelection.toLowerCase();
+let scores = [0, 0];
 
-        do {
-            playerSelection = prompt('Please enter Rock , Paper, Scissor').toLowerCase();
-            if (playerSelection == 'rock' || playerSelection == 'scissor' || playerSelection == 'paper') {
-                break;
-            }
-        } while (playerSelection !== 'rock' || playerSelection !== 'scissor' || playerSelection !== 'paper')
-        
-        let beginGame = playRound(playerSelection, computerSelection);
-		console.log(beginGame);
-
-		if (beginGame.slice(0, 4) == 'Lose') {
-			scores[1] += 1;
-		} else if (beginGame.slice(0, 3) == 'Win') {
-			scores[0] += 1;
-		}
+function score(e) {
+	if (e === 0) {
+		scores[0] += 1;
+	} else if (e === 1) {
+		scores[1] += 1;
 	}
+	return scores;
+}
 
-	if (scores[0] > scores[1]) {
-		console.log('You are a winner! Score: ' + scores[0] + ' to ' + scores[1]);
-	} else if (scores[0] < scores[1]) {
-		console.log('You are a loser! Score: ' + scores[0] + ' to ' + scores[1]);
+function choice(str) {
+	if (str.slice(0, 3) == 'Win') {
+		score(0);
+	} else if (str.slice(0, 4) == 'Lose') {
+		score(1);
+	}
+}
+
+function newGame() {
+	scores = [0, 0];
+}
+
+const ngame = document.querySelector('#new-game');
+ngame.addEventListener('click', () => {
+	newGame();
+	console.log(scores);
+	button.style.visibility = "visible";  
+	player.innerHTML = scores[0];
+	computer.innerHTML = scores[1];
+	content.textContent = "";
+})
+
+const player = document.querySelector('.player');
+const computer = document.querySelector('.cpu');
+
+
+
+const action = document.querySelector('#action');
+
+const content = document.createElement('p');
+content.classList.add('content');
+
+action.appendChild(content);
+
+let button = document.querySelector('#container');
+button.addEventListener('click', (e) => {
+	let z = game(e.target.id);
+	choice(z)
+
+	if (scores[0] === 5) {
+		content.textContent = "The player is the winnnerr!"
+		button.style.visibility = "hidden";  
+	} else if (scores[1] === 5 ) {
+		content.textContent = "The Computer is the winner!!"
+		button.style.visibility = "hidden";  
 	} else {
-		console.log('TIE Game!! Score: ' + scores[0] + ' to ' + scores[1]);
+		content.innerText = z;
 	}
-}
 
-//game()
+	console.log(scores);
+	player.innerHTML = scores[0];
+	computer.innerHTML = scores[1];
 
+	
 
-function test() {
-    let playerSelection;
-    for (i = 0; i < 5; i++) {
-        do {
-            playerSelection = prompt('Please enter Rock , Paper, Scissor').toLowerCase();
-            if (playerSelection == 'rock' || playerSelection == 'scissor' || playerSelection == 'paper') {
-                console.log(playerSelection);
-                break;
-            }
-        } while (playerSelection !== 'rock' || playerSelection !== 'scissor' || playerSelection !== 'paper')
-    }
-}
+})
